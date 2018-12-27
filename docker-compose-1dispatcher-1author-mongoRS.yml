@@ -1,0 +1,41 @@
+version: "2.0"
+services:
+  aemauthor:
+    image: aem-mongomk:6.3-author-replica-set
+    container_name: aemauthor
+    ports:
+      - 4502:4502
+    volumes:
+      - /root/aem/datastore:/datastore
+    links:
+      - mongorep01
+      - mongorep02
+  mongorep01:
+    image: mongo:latest
+    container_name: mongorep01
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongopassword
+    command: mongod --replSet "aemrs0" --bind_ip mongorep01 --keyFile /data/db/keyfile
+    volumes:
+      - /root/aem/mongodata/mongorep01:/data/db
+    ports:
+      - 27101:27017
+  mongorep02:
+    image: mongo:latest
+    container_name: mongorep02
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongopassword
+    command: mongod --replSet "aemrs0" --bind_ip mongorep02 --keyFile /data/db/keyfile
+    volumes:
+      - /root/aem/mongodata/mongorep02:/data/db
+    ports:
+      - 27102:27017
+  dispatcher:
+    image: httpd:dispatcher
+    container_name: dispatcher
+    hostname: dispatcher
+    ports:
+      - 80:80
+

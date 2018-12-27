@@ -1,0 +1,21 @@
+FROM openjdk:8-jre
+
+
+ADD install /install
+ENV AEMNODE author
+ENV AEMPORT 4502
+
+WORKDIR /install
+
+RUN java -jar cq-quickstart-6.3.0.jar -unpack
+
+RUN cp -f "$AEMNODE"-tar.quickstart /install/crx-quickstart/bin/quickstart
+RUN chmod +x /install/crx-quickstart/bin/quickstart
+
+EXPOSE $AEMPORT
+CMD crx-quickstart/bin/quickstart
+
+
+
+
+
