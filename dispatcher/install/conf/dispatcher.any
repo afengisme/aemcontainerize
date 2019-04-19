@@ -33,22 +33,22 @@
       /rend01
         {
         # Hostname or IP of the render
-        /hostname "aemauthor01"
+        /hostname "aempublish"
         # Port of the render
-        /port "4502"
+        /port "4503"
         # Connect timeout in milliseconds, 0 to wait indefinitely
         # /timeout "0"
         }
 
-      /rend02
-        {
-        # Hostname or IP of the render
-        /hostname "aemauthor02"
-        # Port of the render
-        /port "4502"
-        # Connect timeout in milliseconds, 0 to wait indefinitely
-        # /timeout "0"
-        }
+#      /rend02
+#        {
+#        # Hostname or IP of the render
+#        /hostname "aemauthor02"
+#        # Port of the render
+#        /port "4502"
+#        # Connect timeout in milliseconds, 0 to wait indefinitely
+#        # /timeout "0"
+#        }
 
       }
       

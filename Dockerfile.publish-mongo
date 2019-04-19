@@ -1,9 +1,5 @@
-FROM ubuntu:latest
+FROM hub.myregistry.io/aem/aem-base:640-author-tarmk-1.0.0
 
-
-RUN apt-get update && apt-get install -y openjdk-8-jre
-
-ADD install /install
 ENV AEMNODE publish
 ENV AEMPORT 4503
 
@@ -12,8 +8,6 @@ WORKDIR /install
 RUN mkdir -p /install/crx-quickstart/install; \
     cp -f org.apache.jackrabbit.oak.plugins.blob.datastore.FileDataStore.cfg /install/crx-quickstart/install/; \
     cp -f org.apache.jackrabbit.oak.plugins.document.DocumentNodeStoreService.cfg /install/crx-quickstart/install/;
-
-RUN java -jar cq-quickstart-6.3.0.jar -unpack
 
 RUN mkdir -p /install/crx-quickstart/custombin; \
     cp -f "$AEMNODE"-mongo.quickstart /install/crx-quickstart/custombin/quickstart; \

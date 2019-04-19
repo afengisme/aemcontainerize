@@ -1,51 +1,48 @@
 version: "2.0"
 services:
-  aemauthor01:
-    image: aem-mongomk:6.3-author-replica-set
-    container_name: aemauthor01
+  aemauthor:
+    image: hub.myregistry.io/aem/aem-base:640-author-mongomk-1.0.0
+    container_name: aemauthor
     ports:
       - 4502:4502
     volumes:
-      - /root/aem/datastore:/datastore
+      - /opt/aemdata/datastore:/datastore
     links:
       - mongorep01
       - mongorep02
-  aemauthor02:
-    image: aem-mongomk:6.3-author-replica-set
-    container_name: aemauthor02
+  aempublish:
+    image: hub.myregistry.io/aem/aem-base:640-publish-tarmk-1.0.0
+    container_name: aempublish
     ports:
-      - 4512:4502
-    volumes:
-      - /root/aem/datastore:/datastore
-    links:
-      - mongorep01
-      - mongorep02
+      - 4503:4503
   mongorep01:
-    image: mongo:latest
+    image: hub.myregistry.io/aem/mongo:4.0.7
     container_name: mongorep01
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mongo
       - MONGO_INITDB_ROOT_PASSWORD=mongopassword
     command: mongod --replSet "aemrs0" --bind_ip mongorep01 --keyFile /data/db/keyfile
     volumes:
-      - /root/aem/mongodata/mongorep01:/data/db
+      - /opt/aemdata/mongodata/mongorep01:/data/db
     ports:
       - 27101:27017
   mongorep02:
-    image: mongo:latest
+    image: hub.myregistry.io/aem/mongo:4.0.7
     container_name: mongorep02
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mongo
       - MONGO_INITDB_ROOT_PASSWORD=mongopassword
     command: mongod --replSet "aemrs0" --bind_ip mongorep02 --keyFile /data/db/keyfile
     volumes:
-      - /root/aem/mongodata/mongorep02:/data/db
+      - /opt/aemdata/mongodata/mongorep02:/data/db
     ports:
       - 27102:27017
   dispatcher:
-    image: httpd:dispatcher-2authors
+    image: hub.myregistry.io/aem/dispatcher:1.0.0
     container_name: dispatcher
     hostname: dispatcher
     ports:
-      - 80:80
+      - 8060:80
+    links:
+      - aempublish
 

@@ -1,13 +1,12 @@
-FROM openjdk:8-jre
+FROM centos:7.6.1810
 
+RUN yum install -y java-1.8.0-openjdk.x86_64
 
 ADD install /install
 ENV AEMNODE author
 ENV AEMPORT 4502
 
 WORKDIR /install
-
-RUN java -jar cq-quickstart-6.3.0.jar -unpack
 
 RUN cp -f "$AEMNODE"-tar.quickstart /install/crx-quickstart/bin/quickstart
 RUN chmod +x /install/crx-quickstart/bin/quickstart
